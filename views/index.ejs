@@ -25,7 +25,10 @@
 
     <!-- socket.io for communication -->
     <script type="text/javascript">
-        var labTemp = new Array();
+        var mq5 = new Array();
+        var mq7 = new Array();
+        var mq131 = new Array();
+        var mq135 = new Array();
         var headCount = new Array();
 	var socket = io.connect();
         //var socket = io.connect('http://localhost:5000');
@@ -43,94 +46,40 @@
                     $('#topic').html(msg.topic);
                     $('#message').html(msg.topic + ', ' + payload);
                     switch (area) {
-                        case 'front':
-                            $('#value1').html('(Switch value: ' + payload + ')');
-                            if (payload == 'true') {
-                                $('#label1').text('Closed');
-                                $('#label1').removeClass('label-danger').addClass('label-success');
-                            } else {
-                                $('#label1').text('Open');
-                                $('#label1').removeClass('label-success').addClass('label-danger');
-                            }
+
+
+                        case 'audio':
+                            $('#audio_result').html('(Sound: ' + payload + ')');
+
+                            $('#sound').text(payload);
+                            $('#sound').removeClass('label-danger').addClass('label-success');
+
                             break;
 
-                        case 'pir':
-                            $('#value2').html('(Sense value: ' + payload + ')');
-                            if (payload == '0') {
-                                $('#label2').text('Nothing');
-                                $('#label2').removeClass('label-danger').addClass('label-success');
-                            } else {
-                                $('#label2').text('Motion detected');
-                                $('#label2').removeClass('label-success').addClass('label-danger');
-                            }
+                        case 'yolo':
+                            $('#yolo_result').html('(Object: ' + payload + ')');
+
+                            $('#object').text(payload);
+                            $('#object').removeClass('label-danger').addClass('label-success');
+
                             break;
 
-                        case 'headCount':
-                            $('#value3').html('(Head count: ' + payload + ')');
-                            $('#value3Label').text(payload + ' person');
-                            $('#value3Label').removeClass('').addClass('label-success');
-
-                            var entry = new Array();
-                            entry.push(timestamp);
-                            entry.push(parseInt(payload));
-                            headCount.push(entry);
-                            // Show only 20 values
-                            if (headCount.length >= 20) {
-                                headCount.shift()
-                            }
-
-                            var headCountPlot = $.jqplot ('headCountChart', [headCount], {
-                                axesDefaults: {
-                                    labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
-                                    tickOptions: {
-                                        showMark: false,
-                                        showGridline: false,
-                                        show: false,
-                                        showLabel: false,
-                                    }
-                                  },
-                                grid: {
-                                    gridLineColor: '#FFFFFF',
-                                    borderWidth: 0,
-                                    shadow: false,
-                                },
-                                seriesDefaults: {
-                                    rendererOptions: {
-                                        smooth: true
-                                    },
-                                    showMarker: false,
-                                    lineWidth: 2,
-                                  },
-                                  axes: {
-                                    xaxis: {
-                                      renderer:$.jqplot.DateAxisRenderer,
-                                      tickOptions:{
-                                        formatString:'%T'
-                                      },
-                                      pad: 0
-                                    },
-                                    yaxis: {
-                                    }
-                                }
-                            });
-                            break;
-
-
-                        case 'labTemp':
-                            $('#labTempSensor').html('(Sensor value: ' + payload + ')');
-                            $('#labTempLabel').text(payload + '°C');
-                            $('#labTempLabel').removeClass('').addClass('label-default');
+                        case 'mq5':
+                            var mq5_value = (parseFloat(payload))+"";
+                            $('#mq5Sensor').html('(Sensor value: ' + mq5_value + ')');
+                            $('#mq5Label').text(mq5_value);
+                            $('#mq5Label').removeClass('').addClass('label-default');
 
                             var entry = new Array();
                             entry.push(timestamp);
                             entry.push(parseFloat(payload));
-                            labTemp.push(entry);
+                            mq5.push(entry);
                             // Show only 20 values
-                            if (labTemp.length >= 20) {
-                                labTemp.shift()
+                            if (mq5.length >= 20) {
+                                mq5.shift()
                             }
 
-                            var labTempPlot = $.jqplot ('labTempChart', [labTemp], {
+                            var mq5Plot = $.jqplot ('mq5Chart', [mq5], {
                                 axesDefaults: {
                                     labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
                                     tickOptions: {
@@ -167,41 +116,171 @@
                                     }
                                 }
                             });
-
                             break;
-                        case 'basement':
-                            $('#basementTempSensor').html('(Sensor value: ' + payload + ')');
+                        case 'mq7':
+                            var mq7_value = (parseFloat(payload))+"";
+                            $('#mq7Sensor').html('(Sensor value: ' + mq7_value + ')');
+                            $('#mq7Label').text(mq7_value);
+                            $('#mq7Label').removeClass('').addClass('label-default');
 
-                            if (payload >= 25) {
-                                    $('#basementTempLabel').text(payload + '°C - too hot');
-                                    $('#basementTempLabel').removeClass('label-warning label-success label-info label-primary').addClass('label-danger');
-                            } else if (payload >= 21) {
-                                    $('#basementTempLabel').text(payload + '°C - hot');
-                                    $('#basementTempLabel').removeClass('label-danger label-success label-info label-primary').addClass('label-warning');
-                            } else if (payload >= 18) {
-                                    $('#basementTempLabel').text(payload + '°C - normal');
-                                    $('#basementTempLabel').removeClass('label-danger label-warning label-info label-primary').addClass('label-success');
-                            } else if (payload >= 15) {
-                                    $('#basementTempLabel').text(payload + '°C - low');
-                                    $('#basementTempLabel').removeClass('label-danger label-warning label-success label-primary').addClass('label-info');
-                            } else if (payload <= 12) {
-                                    $('#basementTempLabel').text(payload + '°C - too low');
-                                    $('#basementTempLabel').removeClass('label-danger label-warning label-success label-info').addClass('label-primary');
-                            basementTemp.push(parseInt(payload));
-                            if (basementTemp.length >= 20) {
-                                basementTemp.shift()
+                            var entry = new Array();
+                            entry.push(timestamp);
+                            entry.push(parseFloat(payload));
+                            mq7.push(entry);
+                            // Show only 20 values
+                            if (mq7.length >= 20) {
+                                mq7.shift()
                             }
 
-                            $('.basementTempSparkline').sparkline(basementTemp, {
-                                type: 'line',
-                                width: '160',
-                                height: '40'});
-                            }
+                            var mq7Plot = $.jqplot ('mq7Chart', [mq7], {
+                                axesDefaults: {
+                                    labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+                                    tickOptions: {
+                                        showMark: false,
+                                        showGridline: false,
+                                        show: false,
+                                        showLabel: false,
+                                    }
+                                  },
+                                grid: {
+                                    gridLineColor: '#FFFFFF',
+                                    borderWidth: 0,
+                                    shadow: false,
+                                },
+                                seriesDefaults: {
+                                    rendererOptions: {
+                                        smooth: true
+                                    },
+                                    showMarker: false,
+                                    lineWidth: 2,
+                                  },
+                                  axes: {
+                                    xaxis: {
+                                      renderer:$.jqplot.DateAxisRenderer,
+                                      tickOptions:{
+                                        formatString:'%T'
+                                      },
+                                      pad: 0
+                                    },
+                                    yaxis: {
+                                        tickOptions:{
+                                            formatString: '%.1f'
+                                        }
+                                    }
+                                }
+                            });
                             break;
+                        case 'mq131':
+                                var mq131_value = (parseFloat(payload))+"";
+                                $('#mq131Sensor').html('(Sensor value: ' + mq131_value + ')');
+                                $('#mq131Label').text(mq131_value);
+                                $('#mq131Label').removeClass('').addClass('label-default');
+
+                                var entry = new Array();
+                                entry.push(timestamp);
+                                entry.push(parseFloat(payload));
+                                mq131.push(entry);
+                                // Show only 20 values
+                                if (mq131.length >= 20) {
+                                    mq131.shift()
+                                }
+
+                                var mq131Plot = $.jqplot ('mq131Chart', [mq131], {
+                                    axesDefaults: {
+                                        labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+                                        tickOptions: {
+                                            showMark: false,
+                                            showGridline: false,
+                                            show: false,
+                                            showLabel: false,
+                                        }
+                                      },
+                                    grid: {
+                                        gridLineColor: '#FFFFFF',
+                                        borderWidth: 0,
+                                        shadow: false,
+                                    },
+                                    seriesDefaults: {
+                                        rendererOptions: {
+                                            smooth: true
+                                        },
+                                        showMarker: false,
+                                        lineWidth: 2,
+                                      },
+                                      axes: {
+                                        xaxis: {
+                                          renderer:$.jqplot.DateAxisRenderer,
+                                          tickOptions:{
+                                            formatString:'%T'
+                                          },
+                                          pad: 0
+                                        },
+                                        yaxis: {
+                                            tickOptions:{
+                                                formatString: '%.1f'
+                                            }
+                                        }
+                                    }
+                                });
+                                break;
+                        case 'mq135':
+                                var mq135_value = (parseFloat(payload))+"";
+                                $('#mq135Sensor').html('(Sensor value: ' + mq135_value + ')');
+                                $('#mq135Label').text(mq135_value);
+                                $('#mq135Label').removeClass('').addClass('label-default');
+
+                                var entry = new Array();
+                                entry.push(timestamp);
+                                entry.push(parseFloat(payload));
+                                mq135.push(entry);
+                                // Show only 20 values
+                                if (mq135.length >= 20) {
+                                    mq135.shift()
+                                }
+
+                                var mq135Plot = $.jqplot ('mq135Chart', [mq135], {
+                                    axesDefaults: {
+                                        labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+                                        tickOptions: {
+                                            showMark: false,
+                                            showGridline: false,
+                                            show: false,
+                                            showLabel: false,
+                                        }
+                                      },
+                                    grid: {
+                                        gridLineColor: '#FFFFFF',
+                                        borderWidth: 0,
+                                        shadow: false,
+                                    },
+                                    seriesDefaults: {
+                                        rendererOptions: {
+                                            smooth: true
+                                        },
+                                        showMarker: false,
+                                        lineWidth: 2,
+                                      },
+                                      axes: {
+                                        xaxis: {
+                                          renderer:$.jqplot.DateAxisRenderer,
+                                          tickOptions:{
+                                            formatString:'%T'
+                                          },
+                                          pad: 0
+                                        },
+                                        yaxis: {
+                                            tickOptions:{
+                                                formatString: '%.1f'
+                                            }
+                                        }
+                                    }
+                                });
+                                break;
+
                         default: console.log('Error: Data do not match the MQTT topic.'); break;
                     }
          });
-         socket.emit('subscribe', {topic : 'home/#'});
+         socket.emit('subscribe', {topic : 'lab/#'});
         });
     </script>
 
@@ -215,44 +294,60 @@
             <div class="panel panel-default">
               <div class="panel-body">
                     <table class="table table-striped">
-                        <!-- Entrace door
-                        <tr>
-                        <td width="40%" style="vertical-align:middle;"><h3>Entrance</h3><small id="value1">(no value recieved)</small></td>
-                        <td style="vertical-align:middle;"></td>
-                        <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="label1" class="label">Unknown</span></h4></td>
-                        </tr>-->
 
-
-                        <!-- Back door -->
+                        <!-- Sound Classification -->
                         <tr>
-                        <td width="40%" style="vertical-align:middle;"><h3>PIR Motion Sensor</h3><small id="value2">(no value recieved)</small></td>
+                        <td width="40%" style="vertical-align:middle;"><h3>Sound Classification</h3><small id="audio_result">(no value recieved)</small></td>
                         <td style="vertical-align:middle;"></td>
-                        <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="label2" class="label">Unknown</span></h4></td>
+                        <td width="30%" style="vertical-align:middle;"><h3>&nbsp;<span id="sound" class="label">Unknown</span></h3></td>
+                        </tr>
+
+                        <!-- Object Detection -->
+                        <tr>
+                        <td width="40%" style="vertical-align:middle;"><h3>Object Detection</h3><small id="yolo_result">(no value recieved)</small></td>
+                        <td style="vertical-align:middle;"></td>
+                        <td width="30%" style="vertical-align:middle;"><h3>&nbsp;<span id="object" class="label">Unknown</span></h3></td>
+                        </tr>
+
+                        <!-- MQ5 -->
+                        <tr>
+                        <td width="40%" style="vertical-align:middle;"><h3>MQ5</h3><small id="mq5Sensor">(no value recieved)</small></td>
+                        <td style="vertical-align:middle;"><div id="mq5Chart" style="height:80px; width:300px;"></div></td>
+                        <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="mq5Label" class="label">Unknown</span></h4></td>
+                        </tr>
+
+                        <!-- MQ7 -->
+                        <tr>
+                        <td width="40%" style="vertical-align:middle;"><h3>MQ7</h3><small id="mq7Sensor">(no value recieved)</small></td>
+                        <td style="vertical-align:middle;"><div id="mq7Chart" style="height:80px; width:300px;"></div></td>
+                        <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="mq7Label" class="label">Unknown</span></h4></td>
+                        </tr>
+
+                        <!-- MQ131 -->
+                        <tr>
+                        <td width="40%" style="vertical-align:middle;"><h3>MQ131</h3><small id="mq131Sensor">(no value recieved)</small></td>
+                        <td style="vertical-align:middle;"><div id="mq131Chart" style="height:80px; width:300px;"></div></td>
+                        <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="mq131Label" class="label">Unknown</span></h4></td>
+                        </tr>
+
+                        <!-- MQ135 -->
+                        <tr>
+                        <td width="40%" style="vertical-align:middle;"><h3>MQ135</h3><small id="mq135Sensor">(no value recieved)</small></td>
+                        <td style="vertical-align:middle;"><div id="mq135Chart" style="height:80px; width:300px;"></div></td>
+                        <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="mq135Label" class="label">Unknown</span></h4></td>
                         </tr>
 
 
-                        <!-- Head Count -->
+                        <!-- Head Count
                         <tr>
                         <td width="40%" style="vertical-align:middle;"><h3>Head Count</h3><small id="value3">(no value recieved)</small></td>
                         <td style="vertical-align:middle;"><div id="headCountChart" style="height:80px; width:300px;"></div></td>
                         <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="value3Label" class="label">Unknown</span></h4></td>
                         </tr>
+                        -->
 
 
-                        <!-- Lab temperature -->
-                        <tr>
-                        <td width="40%" style="vertical-align:middle;"><h3>Temperature</h3><small id="labTempSensor">(no value recieved)</small></td>
-                        <td style="vertical-align:middle;"><div id="labTempChart" style="height:80px; width:300px;"></div></td>
-                        <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="labTempLabel" class="label">Unknown</span></h4></td>
-                        </tr>
 
-
-                        <!-- Basement temperature
-                        <tr>
-                        <td width="40%" style="vertical-align:middle;"><h3>Basement temperature</h3><small id="basementTempSensor">(no value recieved)</small></td>
-                        <td style="vertical-align:middle;"><span class="basementTempSparkline"></span></td>
-                        <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="basementTempLabel" class="label">Unknown</span></h4></td>
-                        </tr>-->
                     </table>
               </div>
             </div>
