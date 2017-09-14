@@ -6,7 +6,7 @@
     <meta name="description" content="A web interface for MQTT">
     <meta name="author" content="Fabian Affolter">
 
-    <title>Lab conditions</title>
+    <title>Lab Conditions</title>
 
     <!-- Bootstrap core CSS -->
     <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
@@ -20,17 +20,19 @@
     <script type="text/javascript" src="javascripts/jqplot.canvasTextRenderer.min.js"></script>
     <script type="text/javascript" src="javascripts/jqplot.canvasAxisLabelRenderer.min.js"></script>
     <script type="text/javascript" src="javascripts/jqplot.dateAxisRenderer.min.js"></script>
-
     <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="javascripts/sensor-data.js"></script>
+
 
     <!-- socket.io for communication -->
+    <!--
     <script type="text/javascript">
         var mq5 = new Array();
         var mq7 = new Array();
         var mq131 = new Array();
         var mq135 = new Array();
         var headCount = new Array();
-	var socket = io.connect();
+	      var socket = io.connect();
         //var socket = io.connect('http://localhost:5000');
             socket.on('connect', function () {
                 socket.on('mqtt', function (msg) {
@@ -55,7 +57,6 @@
                             $('#sound').removeClass('label-danger').addClass('label-success');
 
                             break;
-
                         case 'yolo':
                             $('#yolo_result').html('(Object: ' + payload + ')');
 
@@ -63,7 +64,16 @@
                             $('#object').removeClass('label-danger').addClass('label-success');
 
                             break;
-
+                        case 'pir':
+                            $('#pir_value').html('(Sense value: ' + payload + ')');
+                            if (payload == '0') {
+                                $('#pir').text('Nothing');
+                                $('#pir').removeClass('label-danger').addClass('label-success');
+                            } else {
+                                $('#pir').text('Motion detected');
+                                $('#pir').removeClass('label-success').addClass('label-danger');
+                            }
+                            break;
                         case 'mq5':
                             var mq5_value = (parseFloat(payload))+"";
                             $('#mq5Sensor').html('(Sensor value: ' + mq5_value + ')');
@@ -283,13 +293,14 @@
          socket.emit('subscribe', {topic : 'lab/#'});
         });
     </script>
+    -->
 
   </head>
 
   <body>
     <div id="wrap">
       <div class="container">
-        <div class="page-header"><h1><b>Lab conditions</b></h1></div>
+        <div class="page-header"><h1><b>Lab Conditions</b></h1></div>
 
             <div class="panel panel-default">
               <div class="panel-body">
@@ -297,56 +308,63 @@
 
                         <!-- Sound Classification -->
                         <tr>
-                        <td width="40%" style="vertical-align:middle;"><h3>Sound Classification</h3><small id="audio_result">(no value recieved)</small></td>
-                        <td style="vertical-align:middle;"></td>
-                        <td width="30%" style="vertical-align:middle;"><h3>&nbsp;<span id="sound" class="label">Unknown</span></h3></td>
+                          <td width="40%" style="vertical-align:middle;"><h3>Sound Classification</h3><small id="audio_result">(no value recieved)</small></td>
+                          <td style="vertical-align:middle;"></td>
+                          <td width="30%" style="vertical-align:middle;"><h3>&nbsp;<span id="sound" class="label">Unknown</span></h3></td>
                         </tr>
 
                         <!-- Object Detection -->
                         <tr>
-                        <td width="40%" style="vertical-align:middle;"><h3>Object Detection</h3><small id="yolo_result">(no value recieved)</small></td>
-                        <td style="vertical-align:middle;"></td>
-                        <td width="30%" style="vertical-align:middle;"><h3>&nbsp;<span id="object" class="label">Unknown</span></h3></td>
+                          <td width="40%" style="vertical-align:middle;"><h3>Object Detection</h3><small id="yolo_result">(no value recieved)</small></td>
+                          <td style="vertical-align:middle;"></td>
+                          <td width="30%" style="vertical-align:middle;"><h3>&nbsp;<span id="object" class="label">Unknown</span></h3></td>
                         </tr>
+
+                        <!-- PIR sensor -->
+                        <tr>
+                          <td width="40%" style="vertical-align:middle;"><h3>Intrusion detection</h3><small id="pir_value">(no value recieved)</small></td>
+                          <td style="vertical-align:middle;"></td>
+                          <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="pir" class="label">Unknown</span></h4></td>
+                        </tr>
+
+
 
                         <!-- MQ5 -->
                         <tr>
-                        <td width="40%" style="vertical-align:middle;"><h3>MQ5</h3><small id="mq5Sensor">(no value recieved)</small></td>
-                        <td style="vertical-align:middle;"><div id="mq5Chart" style="height:80px; width:300px;"></div></td>
-                        <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="mq5Label" class="label">Unknown</span></h4></td>
+                          <td width="40%" style="vertical-align:middle;"><h3>MQ5</h3><small id="mq5Sensor">(no value recieved)</small></td>
+                          <td style="vertical-align:middle;"><div id="mq5Chart" style="height:80px; width:300px;"></div></td>
+                          <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="mq5Label" class="label">Unknown</span></h4></td>
                         </tr>
 
                         <!-- MQ7 -->
                         <tr>
-                        <td width="40%" style="vertical-align:middle;"><h3>MQ7</h3><small id="mq7Sensor">(no value recieved)</small></td>
-                        <td style="vertical-align:middle;"><div id="mq7Chart" style="height:80px; width:300px;"></div></td>
-                        <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="mq7Label" class="label">Unknown</span></h4></td>
+                          <td width="40%" style="vertical-align:middle;"><h3>MQ7</h3><small id="mq7Sensor">(no value recieved)</small></td>
+                          <td style="vertical-align:middle;"><div id="mq7Chart" style="height:80px; width:300px;"></div></td>
+                          <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="mq7Label" class="label">Unknown</span></h4></td>
                         </tr>
 
                         <!-- MQ131 -->
                         <tr>
-                        <td width="40%" style="vertical-align:middle;"><h3>MQ131</h3><small id="mq131Sensor">(no value recieved)</small></td>
-                        <td style="vertical-align:middle;"><div id="mq131Chart" style="height:80px; width:300px;"></div></td>
-                        <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="mq131Label" class="label">Unknown</span></h4></td>
+                          <td width="40%" style="vertical-align:middle;"><h3>MQ131</h3><small id="mq131Sensor">(no value recieved)</small></td>
+                          <td style="vertical-align:middle;"><div id="mq131Chart" style="height:80px; width:300px;"></div></td>
+                          <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="mq131Label" class="label">Unknown</span></h4></td>
                         </tr>
 
                         <!-- MQ135 -->
                         <tr>
-                        <td width="40%" style="vertical-align:middle;"><h3>MQ135</h3><small id="mq135Sensor">(no value recieved)</small></td>
-                        <td style="vertical-align:middle;"><div id="mq135Chart" style="height:80px; width:300px;"></div></td>
-                        <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="mq135Label" class="label">Unknown</span></h4></td>
+                          <td width="40%" style="vertical-align:middle;"><h3>MQ135</h3><small id="mq135Sensor">(no value recieved)</small></td>
+                          <td style="vertical-align:middle;"><div id="mq135Chart" style="height:80px; width:300px;"></div></td>
+                          <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="mq135Label" class="label">Unknown</span></h4></td>
                         </tr>
 
-
-                        <!-- Head Count
+                        <!-- Head Count -->
+                        <!--
                         <tr>
-                        <td width="40%" style="vertical-align:middle;"><h3>Head Count</h3><small id="value3">(no value recieved)</small></td>
-                        <td style="vertical-align:middle;"><div id="headCountChart" style="height:80px; width:300px;"></div></td>
-                        <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="value3Label" class="label">Unknown</span></h4></td>
+                          <td width="40%" style="vertical-align:middle;"><h3>Head Count</h3><small id="value3">(no value recieved)</small></td>
+                          <td style="vertical-align:middle;"><div id="headCountChart" style="height:80px; width:300px;"></div></td>
+                          <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="value3Label" class="label">Unknown</span></h4></td>
                         </tr>
                         -->
-
-
 
                     </table>
               </div>
