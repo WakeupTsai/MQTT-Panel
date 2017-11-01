@@ -11,11 +11,13 @@ var socket = io.connect();
             var message = msg.topic.split('/');
 
             var sensor = message[4];
-            console.log(message);
-            console.log(sensor);
+
+            console.log('message: '+message);
+            console.log('sensor: '+sensor);
             //console.log(String.fromCharCode.apply(null, new Uint8Array(msg.payload)));
 
             var payload = String.fromCharCode.apply(null, new Uint8Array(msg.payload));
+
 
             var timestamp = Math.round((new Date()).getTime() / 1000);
 
@@ -23,6 +25,7 @@ var socket = io.connect();
             $('#message').html(msg.topic + ', ' + payload);
             var obj = JSON.parse(payload);
             payload = obj.d.value;
+            console.log('payload: '+payload);
 
             switch (sensor) {
 
@@ -42,15 +45,40 @@ var socket = io.connect();
 
                     break;
 
-                case 'pir':
+                case 'motion':
 
                     $('#pir_value').html('(Sense value: ' + payload + ')');
+                    console.log("which"+message[2])
                     if (payload == '0') {
-                        $('#pir').text('Nothing');
-                        $('#pir').removeClass('label-danger').addClass('label-success');
+                      switch (message[2]){
+                        case '0242ac100302':
+                          $('#pir3').text('Nothing');
+                          $('#pir3').removeClass('label-danger').addClass('label-success');
+                          break;
+                        case '0242ac101202':
+                          $('#pir2').text('Nothing');
+                          $('#pir2').removeClass('label-danger').addClass('label-success');
+                          break;
+                        case '0242ac106002':
+                          $('#pir1').text('Nothing');
+                          $('#pir1').removeClass('label-danger').addClass('label-success');
+                          break;
+                      }
                     } else {
-                        $('#pir').text('Motion detected');
-                        $('#pir').removeClass('label-success').addClass('label-danger');
+                      switch (message[2]){
+                        case '0242ac100302':
+                          $('#pir3').text('Motion detected');
+                          $('#pir3').removeClass('label-success').addClass('label-danger');
+                          break;
+                        case '0242ac101202':
+                          $('#pir2').text('Motion detected');
+                          $('#pir2').removeClass('label-success').addClass('label-danger');
+                          break;
+                        case '0242ac106002':
+                          $('#pir1').text('Motion detected');
+                          $('#pir1').removeClass('label-success').addClass('label-danger');
+                          break;
+                        }
                     }
                     break;
 
@@ -273,5 +301,5 @@ var socket = io.connect();
                 default: console.log('Error: Data do not match the MQTT topic.'); break;
             }
  });
- socket.emit('subscribe', {topic : 'iot-1/d/b827ebdf52bd/evt/#'});
+ socket.emit('subscribe', {topic : 'iot-1/d/+/evt/#'});
 });
