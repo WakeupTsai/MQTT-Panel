@@ -28,15 +28,6 @@
   <body>
 
     <script>
-    function getImg() {
-        var url = 'images/result.jpg';
-        var $div = $('<div />');
-        var $img = $('<img />', { src: url });
-        $div.append($img);
-        $('body').append($div);
-    }
-
-    getImg();
 
     var interval = setInterval(function() {
         $('img').each(function() {
@@ -85,7 +76,9 @@
                             <a href="#">
                               <div class="hover-img">
                               Show Image
-                               <span><img src="images/result.jpg" alt="image" height="300" /></span>
+                               <span>
+                               <img src="images/result.jpg" alt="image" height="100" />
+                               </span>
                               </div>
                             </a>
                             <h3>&nbsp;<span id="object" class="label">Unknown</span></h3>
