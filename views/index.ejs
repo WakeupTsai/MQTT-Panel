@@ -21,6 +21,11 @@
     <script type="text/javascript" src="javascripts/jqplot.canvasAxisLabelRenderer.min.js"></script>
     <script type="text/javascript" src="javascripts/jqplot.dateAxisRenderer.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <!-- lightbox -->
+    <link rel="stylesheet" href="stylesheets/lightbox.min.css">
+    <script type="text/javascript" src="javascripts/lightbox.js"></script>
+
+
     <script type="text/javascript" src="javascripts/sensor-data.js"></script>
 
   </head>
@@ -62,26 +67,27 @@
                     <table class="table table-striped">
 
                         <!-- Sound Classification -->
-                        <tr>
+                        <!-- <tr>
                           <td width="40%" style="vertical-align:middle;"><h3>Sound Classification</h3><small id="audio_result">(no value recieved)</small></td>
                           <td style="vertical-align:middle;"></td>
                           <td width="30%" style="vertical-align:middle;"><h3>&nbsp;<span id="sound" class="label">Unknown</span></h3></td>
-                        </tr>
+                        </tr> -->
 
                         <!-- Object Detection -->
                         <tr>
                           <td width="40%" style="vertical-align:middle;"><h3>Object Detection</h3><small id="yolo_result">(no value recieved)</small></td>
                           <td style="vertical-align:middle;"></td>
                           <td width="30%" style="vertical-align:middle;">
-                            <a href="#">
-                              <div class="hover-img">
-                              Show Image
-                               <span>
-                               <img src="images/result.jpg" alt="image" height="100" />
-                               </span>
-                              </div>
-                            </a>
-                            <h3>&nbsp;<span id="object" class="label">Unknown</span></h3>
+                            <table>
+                              <td width="50%">
+                                <h4>&nbsp;<span id="object" class="label">Unknown</span></h4>
+                              </td>
+                              <td>
+                                <a href="images/result.jpg" data-lightbox="result_big">
+                                  <img src="images/result.jpg" height="100" alt="result_small" />
+                                </a>
+                              </td>
+                            </table>
                           </td>
                         </tr>
 
