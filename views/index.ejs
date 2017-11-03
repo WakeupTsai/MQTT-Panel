@@ -12,19 +12,14 @@
     <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
     <!-- jQuery -->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <!-- Sparkline -->
-    <script type="text/javascript" src="javascripts/jquery.sparkline.min.js"></script>
-    <!-- jgPlot -->
-    <link class="include" rel="stylesheet" type="text/css" href="stylesheets/jquery.jqplot.min.css" />
-    <script type="text/javascript" src="javascripts/jquery.jqplot.min.js"></script>
-    <script type="text/javascript" src="javascripts/jqplot.canvasTextRenderer.min.js"></script>
-    <script type="text/javascript" src="javascripts/jqplot.canvasAxisLabelRenderer.min.js"></script>
-    <script type="text/javascript" src="javascripts/jqplot.dateAxisRenderer.min.js"></script>
+    <!-- socket.io. -->
     <script src="/socket.io/socket.io.js"></script>
+    <!-- Chart -->
+    <script type="text/javascript" src="javascripts/Chart.min.js"></script>
+    <script type="text/javascript" src="javascripts/drawChart.js"></script>
     <!-- lightbox -->
     <link rel="stylesheet" href="stylesheets/lightbox.min.css">
     <script type="text/javascript" src="javascripts/lightbox.js"></script>
-
 
     <script type="text/javascript" src="javascripts/sensor-data.js"></script>
 
@@ -32,126 +27,122 @@
 
   <body>
 
-    <script>
-
-    var interval = setInterval(function() {
-        $('img').each(function() {
-            var time = (new Date()).getTime();
-            var oldurl = $(this).prop('src');
-            var newurl = oldurl.split("?")[0]+'?'+ new Date().getTime();
-            $(this).prop('src', newurl);
-        });
-    }, 2000);
-    </script>
-
-    <style media="screen" type="text/css">
-    a .hover-img {
-      position:relative;
-     }
-    a .hover-img span {
-      position:absolute; left:-9999px; top:-9999px; z-index:9999;
-     }
-    a:hover .hover-img span {
-      top: 20px;
-      left:0;
-     }
-    </style>
-
-
     <div id="wrap">
       <div class="container">
         <div class="page-header"><h1><b>Lab Conditions</b></h1></div>
+          <div class="panel panel-default">
+            <div class="panel-body">
+                  <table class="table table-striped">
 
-            <div class="panel panel-default">
-              <div class="panel-body">
-                    <table class="table table-striped">
+                      <!-- Sound Classification -->
+                      <!-- <tr>
+                        <td width="40%" style="vertical-align:middle;"><h3>Sound Classification</h3><small id="audio_result">(no value recieved)</small></td>
+                        <td style="vertical-align:middle;"></td>
+                        <td width="30%" style="vertical-align:middle;"><h3>&nbsp;<span id="sound" class="label">Unknown</span></h3></td>
+                      </tr> -->
 
-                        <!-- Sound Classification -->
-                        <!-- <tr>
-                          <td width="40%" style="vertical-align:middle;"><h3>Sound Classification</h3><small id="audio_result">(no value recieved)</small></td>
-                          <td style="vertical-align:middle;"></td>
-                          <td width="30%" style="vertical-align:middle;"><h3>&nbsp;<span id="sound" class="label">Unknown</span></h3></td>
-                        </tr> -->
-
-                        <!-- Object Detection -->
-                        <tr>
-                          <td width="40%" style="vertical-align:middle;"><h3>Object Detection</h3><small id="yolo_result">(no value recieved)</small></td>
-                          <td style="vertical-align:middle;"></td>
-                          <td width="30%" style="vertical-align:middle;">
-                            <table>
-                              <td width="50%">
-                                <h4>&nbsp;<span id="object" class="label">Unknown</span></h4>
-                              </td>
-                              <td>
-                                <a href="images/result.jpg" data-lightbox="result_big">
-                                  <img src="images/result.jpg" height="100" alt="result_small" />
-                                </a>
-                              </td>
-                            </table>
-                          </td>
-                        </tr>
-
-                        <!-- PIR sensor -->
-                        <tr>
-                          <td width="40%" style="vertical-align:middle;"><h3>Intrusion detection</h3><small id="pir_value">(no value recieved)</small></td>
-                          <td style="vertical-align:middle;"></td>
-                          <td>
+                      <!-- Object Detection -->
+                      <tr>
+                        <td width="40%" style="vertical-align:middle;"><h3>Object Detection</h3><small id="yolo_result">(no value recieved)</small></td>
+                        <td style="vertical-align:middle;"></td>
+                        <td width="30%" style="vertical-align:middle;">
                           <table>
-                          <tr width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="pir1" class="label">Unknown</span></h4></tr>
-                          <tr width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="pir2" class="label">Unknown</span></h4></tr>
-                          <tr width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="pir3" class="label">Unknown</span></h4></tr>
+                            <td width="50%">
+                              <h4>&nbsp;<span id="object" class="label">Unknown</span></h4>
+                            </td>
+                            <td>
+                              <a href="images/result.jpg" data-lightbox="result_big">
+                                <img src="images/result.jpg" height="100" alt="result_small" />
+                              </a>
+                            </td>
                           </table>
-                          </td>
-                        </tr>
+                        </td>
+                      </tr>
+
+                      <!--
+                        hover-img: https://jsfiddle.net/b5Lvq7yL/
+                        <a href="#"><div class="hover-img">
+                          Show Image
+                           <span><img src="http://placehold.it/150x150" alt="image" height="100" />      </span>
+                        </div></a>
+                      -->
+
+                      <!-- PIR sensor -->
+                      <tr>
+                        <td width="40%" style="vertical-align:middle;"><h3>Intrusion detection</h3><small id="pir_value">(no value recieved)</small></td>
+                        <td style="vertical-align:middle;"></td>
+                        <td>
+                        <table>
+                        <tr width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="pir1" class="label">Unknown</span></h4></tr>
+                        <tr width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="pir2" class="label">Unknown</span></h4></tr>
+                        <tr width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="pir3" class="label">Unknown</span></h4></tr>
+                        </table>
+                        </td>
+                      </tr>
 
 
+                      <!-- MQ5 -->
+                      <tr>
+                        <td width="40%" style="vertical-align:middle;"><h3>MQ5</h3><small id="mq5Sensor">(no value recieved)</small></td>
+                        <td style="vertical-align:middle;">
+                          <div style="height:80px; width:300px;" >
+                              <canvas id="mq5Chart" ></canvas>
+                          </div>
+                        </td>
+                        <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="mq5Label" class="label">Unknown</span></h4></td>
+                      </tr>
 
-                        <!-- MQ5 -->
-                        <tr>
-                          <td width="40%" style="vertical-align:middle;"><h3>MQ5</h3><small id="mq5Sensor">(no value recieved)</small></td>
-                          <td style="vertical-align:middle;"><div id="mq5Chart" style="height:80px; width:300px;"></div></td>
-                          <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="mq5Label" class="label">Unknown</span></h4></td>
-                        </tr>
+                      <!-- MQ7 -->
+                      <tr>
+                        <td width="40%" style="vertical-align:middle;"><h3>MQ7</h3><small id="mq7Sensor">(no value recieved)</small></td>
+                        <td style="vertical-align:middle;">
+                          <div style="height:80px; width:300px;">
+                              <canvas id="mq7Chart" ></canvas>
+                          </div>                          </td>
+                        <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="mq7Label" class="label">Unknown</span></h4></td>
+                      </tr>
 
-                        <!-- MQ7 -->
-                        <tr>
-                          <td width="40%" style="vertical-align:middle;"><h3>MQ7</h3><small id="mq7Sensor">(no value recieved)</small></td>
-                          <td style="vertical-align:middle;"><div id="mq7Chart" style="height:80px; width:300px;"></div></td>
-                          <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="mq7Label" class="label">Unknown</span></h4></td>
-                        </tr>
+                      <!-- MQ131 -->
+                      <tr>
+                        <td width="40%" style="vertical-align:middle;"><h3>MQ131</h3><small id="mq131Sensor">(no value recieved)</small></td>
+                        <td style="vertical-align:middle;">
+                          <div style="height:80px; width:300px;">
+                              <canvas id="mq131Chart" ></canvas>
+                          </div>
+                        </td>
+                        <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="mq131Label" class="label">Unknown</span></h4></td>
+                      </tr>
 
-                        <!-- MQ131 -->
-                        <tr>
-                          <td width="40%" style="vertical-align:middle;"><h3>MQ131</h3><small id="mq131Sensor">(no value recieved)</small></td>
-                          <td style="vertical-align:middle;"><div id="mq131Chart" style="height:80px; width:300px;"></div></td>
-                          <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="mq131Label" class="label">Unknown</span></h4></td>
-                        </tr>
+                      <!-- MQ135 -->
+                      <tr>
+                        <td width="40%" style="vertical-align:middle;"><h3>MQ135</h3><small id="mq135Sensor">(no value recieved)</small></td>
+                        <td style="vertical-align:middle;">
+                          <div style="height:80px; width:300px;">
+                              <canvas id="mq135Chart" ></canvas>
+                          </div>
+                        <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="mq135Label" class="label">Unknown</span></h4></td>
+                      </tr>
 
-                        <!-- MQ135 -->
-                        <tr>
-                          <td width="40%" style="vertical-align:middle;"><h3>MQ135</h3><small id="mq135Sensor">(no value recieved)</small></td>
-                          <td style="vertical-align:middle;"><div id="mq135Chart" style="height:80px; width:300px;"></div></td>
-                          <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="mq135Label" class="label">Unknown</span></h4></td>
-                        </tr>
+                      <!-- Head Count -->
+                      <!--
+                      <tr>
+                        <td width="40%" style="vertical-align:middle;"><h3>Head Count</h3><small id="value3">(no value recieved)</small></td>
+                        <td style="vertical-align:middle;"><div id="headCountChart" style="height:80px; width:300px;"></div></td>
+                        <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="value3Label" class="label">Unknown</span></h4></td>
+                      </tr>
+                      -->
 
-                        <!-- Head Count -->
-                        <!--
-                        <tr>
-                          <td width="40%" style="vertical-align:middle;"><h3>Head Count</h3><small id="value3">(no value recieved)</small></td>
-                          <td style="vertical-align:middle;"><div id="headCountChart" style="height:80px; width:300px;"></div></td>
-                          <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="value3Label" class="label">Unknown</span></h4></td>
-                        </tr>
-                        -->
-
-                    </table>
-              </div>
+                  </table>
             </div>
+          </div>
           <div class="panel panel-default">
             <div class="panel-body">
                     <b>Latest MQTT message:  </b> <small id="message">no message recieved</small>
             </div>
           </div>
-        <div class="footer">
+      </div>
+    </div>
+    <div class="footer">
     </div>
   </body>
 </html>
