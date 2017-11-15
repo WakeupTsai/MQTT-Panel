@@ -78,7 +78,7 @@ socket.on('connect', function () {
         var mq5_value = (parseFloat(payload))+"";
         $('#mq5Sensor').html('(Sensor value: ' + mq5_value + ')');
         $('#mq5Label').text(mq5_value);
-        $('#mq5Label').removeClass('').addClass('label-default');
+        $('#mq5Label').removeClass('').addClass('label-primary');
 
         mq5Values.push(mq5_value);
         mq5Values.shift();
@@ -90,7 +90,7 @@ socket.on('connect', function () {
         var mq7_value = (parseFloat(payload))+"";
         $('#mq7Sensor').html('(Sensor value: ' + mq7_value + ')');
         $('#mq7Label').text(mq7_value);
-        $('#mq7Label').removeClass('').addClass('label-default');
+        $('#mq7Label').removeClass('').addClass('label-primary');
 
         mq7Values.push(mq7_value);
         mq7Values.shift();
@@ -102,7 +102,7 @@ socket.on('connect', function () {
         var mq131_value = (parseFloat(payload))+"";
         $('#mq131Sensor').html('(Sensor value: ' + mq131_value + ')');
         $('#mq131Label').text(mq131_value);
-        $('#mq131Label').removeClass('').addClass('label-default');
+        $('#mq131Label').removeClass('').addClass('label-primary');
 
         mq131Values.push(mq131_value);
         mq131Values.shift();
@@ -114,7 +114,7 @@ socket.on('connect', function () {
         var mq135_value = (parseFloat(payload))+"";
         $('#mq135Sensor').html('(Sensor value: ' + mq135_value + ')');
         $('#mq135Label').text(mq135_value);
-        $('#mq135Label').removeClass('').addClass('label-default');
+        $('#mq135Label').removeClass('').addClass('label-primary');
 
         mq135Values.push(mq135_value);
         mq135Values.shift();
