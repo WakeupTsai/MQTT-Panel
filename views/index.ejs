@@ -21,128 +21,148 @@
     <link rel="stylesheet" href="stylesheets/lightbox.min.css">
     <script type="text/javascript" src="javascripts/lightbox.js"></script>
 
+    <link rel="stylesheet" href="stylesheets/style.css">
     <script type="text/javascript" src="javascripts/sensor-data.js"></script>
 
   </head>
 
   <body>
 
-    <div id="wrap">
-      <div class="container">
-        <div class="page-header"><h1><b>Lab Conditions</b></h1></div>
-          <div class="panel panel-default">
-            <div class="panel-body">
-                  <table class="table table-striped">
+    <div class="container" style="width: 90%;">
+      <div class="page-header"><h1><b>Lab Conditions</b></h1></div>
 
-                      <!-- Sound Classification -->
-                      <!-- <tr>
-                        <td width="40%" style="vertical-align:middle;"><h3>Sound Classification</h3><small id="audio_result">(no value recieved)</small></td>
-                        <td style="vertical-align:middle;"></td>
-                        <td width="30%" style="vertical-align:middle;"><h3>&nbsp;<span id="sound" class="label">Unknown</span></h3></td>
-                      </tr> -->
+      <div class="row row-eq-height">
+        <div class="col-md-3">
+          <div class="panel panel-default" style=" height:100%;">
+              <div class="panel-heading">
+                  <h4>Object Detection</h4><small id="yolo_result">(no value recieved)</small>
+              </div>
+              <div class="panel-body">
+                <table>
+                  <td width="50%">
+                    <h4>&nbsp;<span id="object" class="label label-default">Unknown</span></h4>
+                  </td>
+                  <td>
+                    <a href="images/result.jpg" data-lightbox="result_big">
+                      <img src="images/result.jpg" height="100" alt="result_small" />
+                    </a>
+                  </td>
+                </table>
+              </div>
+          </div>
+        </div>
 
-                      <!-- Object Detection -->
-                      <tr>
-                        <td width="40%" style="vertical-align:middle;"><h3>Object Detection</h3><small id="yolo_result">(no value recieved)</small></td>
-                        <td style="vertical-align:middle;"></td>
-                        <td width="30%" style="vertical-align:middle;">
-                          <table>
-                            <td width="50%">
-                              <h4>&nbsp;<span id="object" class="label label-default">Unknown</span></h4>
-                            </td>
-                            <td>
-                              <a href="images/result.jpg" data-lightbox="result_big">
-                                <img src="images/result.jpg" height="100" alt="result_small" />
-                              </a>
-                            </td>
-                          </table>
-                        </td>
-                      </tr>
-
-                      <!--
-                        hover-img: https://jsfiddle.net/b5Lvq7yL/
-                        <a href="#"><div class="hover-img">
-                          Show Image
-                           <span><img src="http://placehold.it/150x150" alt="image" height="100" />      </span>
-                        </div></a>
-                      -->
-
-                      <!-- PIR sensor -->
-                      <tr>
-                        <td width="40%" style="vertical-align:middle;"><h3>Intrusion detection</h3><small id="pir_value">(no value recieved)</small></td>
-                        <td style="vertical-align:middle;"></td>
-                        <td>
-                        <table>
-                        <tr width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="pir1" class="label label-success">Nothing</span></h4></tr>
-                        <tr width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="pir2" class="label label-success">Nothing</span></h4></tr>
-                        <tr width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="pir3" class="label label-success">Nothing</span></h4></tr>
-                        </table>
-                        </td>
-                      </tr>
-
-
-                      <!-- MQ5 -->
-                      <tr>
-                        <td width="40%" style="vertical-align:middle;"><h3>MQ5</h3><small id="mq5Sensor">(no value recieved)</small></td>
-                        <td style="vertical-align:middle;">
-                          <div style="height:80px; width:300px;" >
-                              <canvas id="mq5Chart" ></canvas>
-                          </div>
-                        </td>
-                        <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="mq5Label" class="label">Unknown</span></h4></td>
-                      </tr>
-
-                      <!-- MQ7 -->
-                      <tr>
-                        <td width="40%" style="vertical-align:middle;"><h3>MQ7</h3><small id="mq7Sensor">(no value recieved)</small></td>
-                        <td style="vertical-align:middle;">
-                          <div style="height:80px; width:300px;">
-                              <canvas id="mq7Chart" ></canvas>
-                          </div>                          </td>
-                        <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="mq7Label" class="label">Unknown</span></h4></td>
-                      </tr>
-
-                      <!-- MQ131 -->
-                      <tr>
-                        <td width="40%" style="vertical-align:middle;"><h3>MQ131</h3><small id="mq131Sensor">(no value recieved)</small></td>
-                        <td style="vertical-align:middle;">
-                          <div style="height:80px; width:300px;">
-                              <canvas id="mq131Chart" ></canvas>
-                          </div>
-                        </td>
-                        <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="mq131Label" class="label">Unknown</span></h4></td>
-                      </tr>
-
-                      <!-- MQ135 -->
-                      <tr>
-                        <td width="40%" style="vertical-align:middle;"><h3>MQ135</h3><small id="mq135Sensor">(no value recieved)</small></td>
-                        <td style="vertical-align:middle;">
-                          <div style="height:80px; width:300px;">
-                              <canvas id="mq135Chart" ></canvas>
-                          </div>
-                        <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="mq135Label" class="label">Unknown</span></h4></td>
-                      </tr>
-
-                      <!-- Head Count -->
-                      <!--
-                      <tr>
-                        <td width="40%" style="vertical-align:middle;"><h3>Head Count</h3><small id="value3">(no value recieved)</small></td>
-                        <td style="vertical-align:middle;"><div id="headCountChart" style="height:80px; width:300px;"></div></td>
-                        <td width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="value3Label" class="label">Unknown</span></h4></td>
-                      </tr>
-                      -->
-
+        <div class="col-md-3">
+          <div class="panel panel-default" style=" height:100%;">
+              <div class="panel-heading">
+                  <h4>Intrusion Detection</h4><small id="pir_value">(no value recieved)</small>
+              </div>
+              <div class="panel-body">
+                <table>
+                  <table>
+                  <tr width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="pir1" class="label label-success">Nothing</span></h4></tr>
+                  <tr width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="pir2" class="label label-success">Nothing</span></h4></tr>
+                  <tr width="30%" style="vertical-align:middle;"><h4>&nbsp;<span id="pir3" class="label label-success">Nothing</span></h4></tr>
                   </table>
-            </div>
+              </div>
           </div>
-          <div class="panel panel-default">
-            <div class="panel-body">
-                    <b>Latest MQTT message:  </b> <small id="message">no message recieved</small>
-            </div>
-          </div>
+        </div>
+
       </div>
+      <hr>
+      <div class="row row-eq-height">
+        <div class="col-md-3">
+          <div class="panel panel-default" style=" height:100%;">
+              <div class="panel-heading">
+                  <h4>MQ5</h4><small id="mq5Sensor">(no value recieved)</small>
+              </div>
+              <div class="panel-body">
+                <table>
+                  <tr>
+                    <h4>&nbsp;<span id="mq5Label" class="label label-primary">Unknow</span></h4>
+                  </tr>
+                  <tr>
+                    <div style="height:50px; width:80%;">
+                        <canvas id="mq5Chart" ></canvas>
+                    </div>
+                  </tr>
+                </table>
+              </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="panel panel-default" style=" height:100%;">
+              <div class="panel-heading">
+                  <h4>MQ7</h4><small id="mq7Sensor">(no value recieved)</small>
+              </div>
+              <div class="panel-body">
+                <table>
+                  <tr>
+                    <h4>&nbsp;<span id="mq7Label" class="label label-primary">Unknow</span></h4>
+                  </tr>
+                  <tr>
+                    <div style="height:50px; width:80%;">
+                        <canvas id="mq7Chart" ></canvas>
+                    </div>
+                  </tr>
+                </table>
+              </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="panel panel-default" style=" height:100%;">
+              <div class="panel-heading">
+                  <h4>MQ131</h4><small id="mq131Sensor">(no value recieved)</small>
+              </div>
+              <div class="panel-body">
+                <table>
+                  <tr>
+                    <h4>&nbsp;<span id="mq131Label" class="label label-primary">Unknow</span></h4>
+                  </tr>
+                  <tr>
+                    <div style="height:50px; width:80%;">
+                        <canvas id="mq131Chart" ></canvas>
+                    </div>
+                  </tr>
+                </table>
+              </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="panel panel-default" style=" height:100%;">
+              <div class="panel-heading">
+                  <h4>MQ135</h4><small id="mq135Sensor">(no value recieved)</small>
+              </div>
+              <div class="panel-body">
+                <table>
+                  <tr>
+                    <h4>&nbsp;<span id="mq135Label" class="label label-primary">Unknow</span></h4>
+                  </tr>
+                  <tr>
+                    <div style="height:50px; width:80%;">
+                        <canvas id="mq135Chart" ></canvas>
+                    </div>
+                  </tr>
+                </table>
+              </div>
+          </div>
+        </div>
+
+      </div>
+
+
+      <hr>
+      <div class="panel panel-default">
+        <div class="panel-body">
+                <b>Latest MQTT message:  </b> <small id="message">no message recieved</small>
+        </div>
+      </div>
+
     </div>
-    <div class="footer">
-    </div>
+
+
   </body>
 </html>
