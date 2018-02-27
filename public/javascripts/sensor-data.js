@@ -24,10 +24,23 @@ socket.on('connect', function () {
 
     switch (sensor) {
 
+      case 'heatmap':
+        $('#heat_map_result').html('(Pollution Range: ' + payload + ')');
+        $('#heat_map').text(payload);
+        $('#heat_map').removeClass('label-danger').addClass('label-success');
+
+        break;
+
       case 'audio':
         $('#audio_result').html('(Sound: ' + payload + ')');
         $('#sound').text(payload);
         $('#sound').removeClass('label-danger').addClass('label-success');
+
+        break;
+
+      case 'sound_detect':
+        $('#audio_result').html('(Sound: ' + payload + '...)');
+        $('#sound').text(payload);
 
         break;
 
