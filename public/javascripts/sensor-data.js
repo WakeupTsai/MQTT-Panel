@@ -2,6 +2,9 @@ var mq5 = new Array();
 var mq7 = new Array();
 var mq131 = new Array();
 var mq135 = new Array();
+var pir1 = new Array();
+var pir2 = new Array();
+var pir3 = new Array();
 var headCount = new Array();
 var socket = io.connect();
 
@@ -56,32 +59,50 @@ socket.on('connect', function () {
         //console.log("which"+message[2])
         if (payload == '0') {
           switch (message[2]){
-            case '0242ac100302':
-              $('#pir3').text('Nothing');
-              $('#pir3').removeClass('label-danger').addClass('label-success');
-              break;
-            case '0242ac101202':
-              $('#pir2').text('Nothing');
-              $('#pir2').removeClass('label-danger').addClass('label-success');
-              break;
-            case '0242ac106002':
+            case 'rpi1':
               $('#pir1').text('Nothing');
               $('#pir1').removeClass('label-danger').addClass('label-success');
+              pir1Values.push(payload);
+              pir1Values.shift();
+              charts.forEach(function(chart) { chart.update(); });
+              break;
+            case 'rpi2':
+              $('#pir2').text('Nothing');
+              $('#pir2').removeClass('label-danger').addClass('label-success');
+              pir2Values.push(payload);
+              pir2Values.shift();
+              charts.forEach(function(chart) { chart.update(); });
+              break;
+            case 'rpi3':
+              $('#pir3').text('Nothing');
+              $('#pir3').removeClass('label-danger').addClass('label-success');
+              pir3Values.push(payload);
+              pir3Values.shift();
+              charts.forEach(function(chart) { chart.update(); });
               break;
           }
         } else {
           switch (message[2]){
-            case '0242ac100302':
-              $('#pir3').text('Motion detected');
-              $('#pir3').removeClass('label-success').addClass('label-danger');
-              break;
-            case '0242ac101202':
-              $('#pir2').text('Motion detected');
-              $('#pir2').removeClass('label-success').addClass('label-danger');
-              break;
-            case '0242ac106002':
-              $('#pir1').text('Motion detected');
+            case 'rpi1':
+              $('#pir1').text('Motion');
               $('#pir1').removeClass('label-success').addClass('label-danger');
+              pir1Values.push(payload);
+              pir1Values.shift();
+              charts.forEach(function(chart) { chart.update(); });
+              break;
+            case 'rpi2':
+              $('#pir2').text('Motion');
+              $('#pir2').removeClass('label-success').addClass('label-danger');
+              pir2Values.push(payload);
+              pir2Values.shift();
+              charts.forEach(function(chart) { chart.update(); });
+              break;
+            case 'rpi3':
+              $('#pir3').text('Motion');
+              $('#pir3').removeClass('label-success').addClass('label-danger');
+              pir3Values.push(payload);
+              pir3Values.shift();
+              charts.forEach(function(chart) { chart.update(); });
               break;
             }
         }
